@@ -1,0 +1,32 @@
+---
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <Header title="Contacto | Santiago" />
+  <body>
+    <div class="content">
+      <Sidebar selectedItem="contacto" />
+      <nav class="main">
+        <div class="container">
+          <h2 style="margin-top: 40px;">Contacto</h2>
+          <div class="projects-section" style="margin-top: 30px;">
+            <div style="background: #111; padding: 30px; border-radius: 15px; border: 1px solid #222;">
+              <div style="margin-bottom: 25px;">
+                <h4 style="color: #888; font-size: 0.9rem; text-transform: uppercase;">WhatsApp / Celular</h4>
+                <p style="font-size: 1.5rem; color: #fff;">+57 [Tu Número]</p>
+              </div>
+              <div>
+                <h4 style="color: #888; font-size: 0.9rem; text-transform: uppercase;">Correos Electrónicos</h4>
+                <p style="font-size: 1.2rem; color: #fff;">[tu-correo-1]@unbosque.edu.co</p>
+                <p style="font-size: 1.2rem; color: #fff;">[tu-correo-personal]@gmail.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>

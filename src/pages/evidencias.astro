@@ -1,0 +1,44 @@
+---
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <Header title="Evidencias | Santiago" />
+  <body>
+    <div class="content">
+      <Sidebar selectedItem="evidencias" />
+      <nav class="main">
+        <div class="container">
+          <h2 style="margin-top: 40px;">Evidencias</h2>
+          <p class="lead">Documentación y respaldos de los módulos aprendidos.</p>
+          
+          <div class="projects-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+            
+            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
+              <h4 style="color: #fff;">SQL</h4>
+              <p class="gray-color">Scripts de creación y DML.</p>
+            </div>
+
+            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
+              <h4 style="color: #fff;">PL/SQL Scripts</h4>
+              <p class="gray-color">Triggers y Funciones.</p>
+            </div>
+
+            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
+              <h4 style="color: #fff;">NoSQL</h4>
+              <p class="gray-color">Bases de datos de documentos.</p>
+            </div>
+
+            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
+              <h4 style="color: #fff;">Proyecto</h4>
+              <p class="gray-color">Integración final del semestre.</p>
+            </div>
+
+          </div>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>

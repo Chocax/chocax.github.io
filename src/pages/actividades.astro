@@ -1,0 +1,30 @@
+---
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar.astro";
+---
+
+<!DOCTYPE html>
+<html lang="es">
+  <Header title="Actividades | Santiago" />
+  <body>
+    <div class="content">
+      <Sidebar selectedItem="actividades" />
+      <nav class="main">
+        <div class="container">
+          <h2 style="margin-top: 40px;">Actividades de Clase</h2>
+          <p class="lead">Recopilación de retos, algoritmos y ejercicios prácticos.</p>
+          
+          <div class="projects-section" style="margin-top: 30px;">
+            <div class="projects-container" style="background: #111; padding: 25px; border-radius: 15px; border: 1px solid #222;">
+              <h4 style="color: #fff;">Ejercicio: Lógica y Algoritmos</h4>
+              <p class="gray-color">Implementación de estructuras de datos y resolución de problemas en C++ y Java.</p>
+              <div style="margin-top: 15px; background: #000; padding: 15px; border-radius: 8px; font-family: monospace; color: #0f0;">
+                <p>// Ejemplo de código<br/>System.out.println("Ingeniería de Sistemas - El Bosque");</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>

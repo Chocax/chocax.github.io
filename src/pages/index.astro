@@ -3,88 +3,42 @@ import Header from "../components/Header.astro";
 import Sidebar from "../components/Sidebar.astro";
 ---
 
-
 <!DOCTYPE html>
-<html
->
-  <Header title="Sam Bernstein" />
+<html lang="es">
+  <Header title="Santiago Pinzón | Inicio" />
   <body>
     <div class="content">
       <Sidebar selectedItem="home" />
       <nav class="main">
         <div class="container">
           <main class="fold-content-container">
-            <div class="fold-content">
-              <h1>Hi, I'm Sam.<br />I build things for the web.</h1>
-              <p class="lead">
-                Experienced backend developer and cloud architect. A proactive team member dedicated to continuous learning, problem-solving, and aiding teammates in achieving quicker outcomes.
+            <div class="fold-content" style="text-align: center; margin-top: 40px;">
+              <img src="/assets/tu-foto.jpg" alt="Santiago Pinzón" style="width: 180px; height: 180px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; margin-bottom: 20px;" />
+              
+              <h1>Santiago Pinzón Vásquez</h1>
+              <h3 style="color: #888;">Estudiante de Ingeniería de Sistemas - 5to Semestre</h3>
+              
+              <p class="lead" style="max-width: 600px; margin: 20px auto;">
+                Estudiante en la Universidad El Bosque. Soy alguien sencillo, dedicado y con la chispa necesaria para liderar proyectos. Me caracterizo por mis habilidades blandas, buena parla y la capacidad de resolver problemas con tecnologías como <strong>Java, Spring Boot, Python, C++ y MySQL</strong>.
               </p>
             </div>
-            <a href="mailto:sam@overview.co.il	" class="button w-button">Contact</a>
+            
+            <div style="margin-top: 50px; background: #161616; padding: 30px; border-radius: 20px; border: 1px solid #333;">
+               <h4 style="margin-bottom: 20px; color: #fff;">Video de Presentación</h4>
+               <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+                  <iframe 
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                    src="https://www.youtube.com/embed/VIDEO_ID_AQUÍ" 
+                    title="Presentación Santiago" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                  </iframe>
+               </div>
+            </div>
           </main>
-          <div class="projects-section">
-            <!-- Software Development -->
-            <a href="/software-development" class="projects-container">
-              <div class="single-projects-category">
-                <div class="projects-category-image-container">
-                  <img src="./assets/browser.svg" loading="lazy" alt="" class="projects-category-image" />
-                </div>
-              </div>
-              <div class="single-projects-content">
-                <h4>Software Development</h4>
-                <div class="tech-tools-container">
-                  <div class="mini-label-white gray-color">Technologies &amp; tools</div>
-                  <div class="chips-container chips-container-small-width">
-                    <div class="single-chip small-chip">React</div>
-                    <div class="single-chip small-chip">Next.js</div>
-                    <div class="single-chip small-chip">Node.js</div>
-                    <div class="single-chip small-chip">MongoDB</div>
-                    <div class="single-chip small-chip">Heroku</div>
-                    <div class="single-chip small-chip">RabbitMQ</div>
-                    <div class="single-chip small-chip">Express.js</div>
-                    <div class="single-chip small-chip">TypeScript</div>
-                    <div class="single-chip small-chip">NestJS</div>
-                    <div class="single-chip small-chip">Angular</div>
-                    <div class="single-chip small-chip">Postgres</div>
-                    <div class="single-chip small-chip">Linode</div>
-                  </div>
-                </div>
-              </div>
-            </a>
-            <!-- DevOps & Cloud -->
-            <a href="/devops" class="projects-container">
-              <div class="single-projects-category">
-                <div class="projects-category-image-container devops-img">
-                  <img src="./assets/database.svg" loading="lazy" alt="" class="projects-category-image" />
-                </div>
-              </div>
-              <div class="single-projects-content">
-                <h4>DevOps &amp;&nbsp;Cloud</h4>
-                <div class="tech-tools-container">
-                  <div class="mini-label-white gray-color">Technologies &amp; tools</div>
-                  <div class="chips-container chips-container-small-width">
-                    <div class="single-chip small-chip">Terraform</div>
-                    <div class="single-chip small-chip">Azure</div>
-                    <div class="single-chip small-chip">AWS</div>
-                    <div class="single-chip small-chip">Docker</div>
-                    <div class="single-chip small-chip">Kubernetes</div>
-                    <div class="single-chip small-chip">GitLab CI/CD</div>
-                    <div class="single-chip small-chip">RKE</div>
-                    <div class="single-chip small-chip">Node.js</div>
-                    <div class="single-chip small-chip">RabbitMQ</div>
-                    <div class="single-chip small-chip">Linux</div>
-                    <div class="single-chip small-chip">Bash</div>
-                    <div class="single-chip small-chip">Grafana</div>
-                    <div class="single-chip small-chip">Prometheus</div>
-                  </div>
-                </div>
-              </div>
-            </a>
-          </div>
         </div>
       </nav>
     </div>
-
-    <!--[if lte IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/placeholders/3.0.2/placeholders.min.js"></script><![endif]-->
   </body>
 </html>
