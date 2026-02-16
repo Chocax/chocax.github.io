@@ -13,22 +13,22 @@ import Sidebar from "../components/Sidebar.astro";
         <div class="container" style="max-width: 1200px; padding: 60px 40px;">
           
           <header style="margin-bottom: 80px; border-bottom: 1px solid #222; padding-bottom: 30px;">
-            <h2 style="font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 10px;">
-              Laboratorio SQL
+            <h2 style="font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 20px;">
+              Actividades SQL
             </h2>
-            <p style="color: #666; font-size: 1.3rem; max-width: 700px;">
-              Resolución de problemas complejos de arquitectura de datos y optimización de consultas.
-            </p>
+            <div style="background: #1a1a1a; border-left: 4px solid #ffbd2e; padding: 15px 25px; border-radius: 4px;">
+              <p style="color: #e0e0e0; font-size: 1.1rem; margin: 0;">
+                <strong>Nota:</strong> Todos los ejercicios presentados a continuación han sido desarrollados utilizando el <strong>esquema HR (Human Resources)</strong> proporcionado por <strong>Oracle Live SQL</strong>.
+              </p>
+            </div>
           </header>
 
-          <div class="activities-stack" style="display: flex; flex-direction: column; gap: 80px;">
+          <div class="activities-stack" style="display: flex; flex-direction: column; gap: 90px;">
             
             <section class="activity-item">
-              <div style="margin-bottom: 25px;">
-                <span style="color: #fff; background: #333; padding: 4px 12px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; text-transform: uppercase;">Ejercicio 01</span>
-                <h3 style="font-size: 2rem; margin: 15px 0 10px 0; color: #fff;">Análisis de Rotación de Personal</h3>
-                <p style="color: #aaa; font-size: 1.1rem; line-height: 1.7; max-width: 900px;">
-                  Identificación proactiva de empleados con múltiples registros en el historial laboral. Esta consulta permite auditar el crecimiento interno y la rotación de cargos dentro de la estructura organizacional.
+              <div style="margin-bottom: 35px;"> <span style="color: #fff; background: #333; padding: 5px 15px; border-radius: 4px; font-family: monospace; font-size: 0.8rem;">EJERCICIO 01</span>
+                <h3 style="font-size: 2.2rem; margin: 20px 0; color: #fff;">Rotación de Cargos</h3>
+                <p style="color: #bbb; font-size: 1.2rem; line-height: 1.8; margin-top: 15px;"> ¿Cuantos empleados han pasado por mas de un cargo en la compañia?
                 </p>
               </div>
 
@@ -39,22 +39,23 @@ import Sidebar from "../components/Sidebar.astro";
                     <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
                     <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
                   </div>
-                  <span style="color: #555; font-family: monospace; font-size: 0.8rem;">rotation_analysis.sql</span>
+                  <span style="color: #555; font-family: monospace; font-size: 0.8rem;">query_01.sql</span>
                 </div>
-                <pre style="margin: 0; padding: 40px; overflow-x: auto; font-family: 'Fira Code', 'Cascadia Code', monospace; font-size: 1.1rem; line-height: 1.6;"><code><span style="color: #c678dd;">SELECT</span> E.FIRST_NAME, H.EMPLOYEE_ID, <span style="color: #e5c07b;">COUNT</span>(*) <span style="color: #c678dd;">AS</span> job_count
-<span style="color: #c678dd;">FROM</span> HR.JOB_HISTORY H 
-<span style="color: #c678dd;">JOIN</span> HR.EMPLOYEES E <span style="color: #c678dd;">ON</span> H.EMPLOYEE_ID = E.EMPLOYEE_ID
+                <pre style="margin: 0; padding: 40px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 1.1rem; line-height: 1.6;"><code><span style="color: #c678dd;">SELECT</span> E.FIRST_NAME, H.EMPLOYEE_ID, <span style="color: #e5c07b;">COUNT</span>(*) <span style="color: #c678dd;">AS</span> job_count
+<span style="color: #c678dd;">FROM</span> HR.JOB_HISTORY H <span style="color: #c678dd;">JOIN</span> HR.EMPLOYEES E
+<span style="color: #c678dd;">ON</span> H.EMPLOYEE_ID = E.EMPLOYEE_ID
 <span style="color: #c678dd;">GROUP BY</span> E.FIRST_NAME, H.EMPLOYEE_ID
-<span style="color: #c678dd;">HAVING COUNT</span>(*) > 1;</code></pre>
+<span style="color: #c678dd;">HAVING COUNT</span> (*) > 1;</code></pre>
               </div>
             </section>
 
             <section class="activity-item">
-              <div style="margin-bottom: 25px;">
-                <span style="color: #fff; background: #333; padding: 4px 12px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; text-transform: uppercase;">Ejercicio 02</span>
-                <h3 style="font-size: 2rem; margin: 15px 0 10px 0; color: #fff;">Segmentación Geográfica y Salarial</h3>
-                <p style="color: #aaa; font-size: 1.1rem; line-height: 1.7; max-width: 900px;">
-                  Extracción de datos específicos para la región europea. El objetivo es filtrar colaboradores con salarios competitivos (4k-6k) integrando la cadena de suministro de datos desde locaciones hasta departamentos.
+              <div style="margin-bottom: 35px;">
+                <span style="color: #fff; background: #333; padding: 5px 15px; border-radius: 4px; font-family: monospace; font-size: 0.8rem;">EJERCICIO 02</span>
+                <h3 style="font-size: 2.2rem; margin: 20px 0; color: #fff;">Filtro de Empleados en Europa</h3>
+                <p style="color: #bbb; font-size: 1.2rem; line-height: 1.8; margin-top: 15px;">
+                  Identifique todos los empleados que vivan o trabajen en europa y tengan un salario entre 4000 y 6000 dolares. <br/>
+                  <span style="color: #777; font-size: 1rem;">(Nombres y apellidos en una sola columna, pais, salario)</span>
                 </p>
               </div>
 
@@ -65,26 +66,24 @@ import Sidebar from "../components/Sidebar.astro";
                     <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
                     <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
                   </div>
-                  <span style="color: #555; font-family: monospace; font-size: 0.8rem;">geo_salary_filter.sql</span>
+                  <span style="color: #555; font-family: monospace; font-size: 0.8rem;">query_02.sql</span>
                 </div>
-                <pre style="margin: 0; padding: 40px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 1.1rem; line-height: 1.6;"><code><span style="color: #c678dd;">SELECT CONCAT</span>(E.FIRST_NAME, <span style="color: #98c379;">' '</span>, E.LAST_NAME) <span style="color: #c678dd;">AS</span> NAME, 
-       C.COUNTRY_NAME <span style="color: #c678dd;">AS</span> COUNTRY, 
-       E.SALARY
-<span style="color: #c678dd;">FROM</span> HR.EMPLOYEES E 
-<span style="color: #c678dd;">JOIN</span> HR.DEPARTMENTS D <span style="color: #c678dd;">ON</span> E.DEPARTMENT_ID = D.DEPARTMENT_ID
+                <pre style="margin: 0; padding: 40px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 1.1rem; line-height: 1.6;"><code><span style="color: #c678dd;">SELECT CONCAT</span> (E.FIRST_NAME, <span style="color: #98c379;">' '</span>, E.LAST_NAME) <span style="color: #c678dd;">AS</span> NAME, C.COUNTRY_NAME <span style="color: #c678dd;">AS</span> COUNTRY, E.SALARY
+<span style="color: #c678dd;">FROM</span> HR.EMPLOYEES E <span style="color: #c678dd;">JOIN</span> HR.DEPARTMENTS D
+<span style="color: #c678dd;">ON</span> E.DEPARTMENT_ID = D.DEPARTMENT_ID
 <span style="color: #c678dd;">JOIN</span> HR.LOCATIONS L <span style="color: #c678dd;">ON</span> L.LOCATION_ID = D.LOCATION_ID
 <span style="color: #c678dd;">JOIN</span> HR.COUNTRIES C <span style="color: #c678dd;">ON</span> L.COUNTRY_ID = C.COUNTRY_ID
-<span style="color: #c678dd;">WHERE</span> C.REGION_ID = 10 
-  <span style="color: #c678dd;">AND</span> E.SALARY <span style="color: #c678dd;">BETWEEN</span> 4000 <span style="color: #c678dd;">AND</span> 6000;</code></pre>
+<span style="color: #c678dd;">WHERE</span> C.REGION_ID = 10 <span style="color: #c678dd;">AND</span> E.SALARY <span style="color: #c678dd;">BETWEEN</span> 4000 <span style="color: #c678dd;">AND</span> 6000;</code></pre>
               </div>
             </section>
 
             <section class="activity-item">
-              <div style="margin-bottom: 25px;">
-                <span style="color: #fff; background: #333; padding: 4px 12px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; text-transform: uppercase;">Ejercicio 03</span>
-                <h3 style="font-size: 2rem; margin: 15px 0 10px 0; color: #fff;">Estructura Jerárquica y Privacidad</h3>
-                <p style="color: #aaa; font-size: 1.1rem; line-height: 1.7; max-width: 900px;">
-                  Modelado de relaciones de reporte directo. Se implementa una técnica de enmascaramiento selectivo sobre los correos electrónicos para cumplir con políticas de privacidad de datos.
+              <div style="margin-bottom: 35px;">
+                <span style="color: #fff; background: #333; padding: 5px 15px; border-radius: 4px; font-family: monospace; font-size: 0.8rem;">EJERCICIO 03</span>
+                <h3 style="font-size: 2.2rem; margin: 20px 0; color: #fff;">Orden Jerárquico y Seguridad</h3>
+                <p style="color: #bbb; font-size: 1.2rem; line-height: 1.8; margin-top: 15px;">
+                  Proyectar orden jerarquico de los cargos de los empleados, mostrar el nombre del empelado y sus jefes. <br/>
+                  <span style="color: #777; font-size: 1rem;">(empleado, jefe, extraer emails de los dos - Las primeras 3 letras, luego rellenar 6 asteriscos a la izquierda)</span>
                 </p>
               </div>
 
@@ -95,13 +94,15 @@ import Sidebar from "../components/Sidebar.astro";
                     <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
                     <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
                   </div>
-                  <span style="color: #555; font-family: monospace; font-size: 0.8rem;">hierarchy_masking.sql</span>
+                  <span style="color: #555; font-family: monospace; font-size: 0.8rem;">query_03.sql</span>
                 </div>
                 <pre style="margin: 0; padding: 40px; overflow-x: auto; font-family: 'Fira Code', monospace; font-size: 1.1rem; line-height: 1.6;"><code><span style="color: #c678dd;">SELECT</span> 
     E.FIRST_NAME || <span style="color: #98c379;">' '</span> || E.LAST_NAME <span style="color: #c678dd;">AS</span> EMPLEADO,
     <span style="color: #e5c07b;">LPAD</span>(<span style="color: #e5c07b;">SUBSTR</span>(E.EMAIL, 1, 3), 9, <span style="color: #98c379;">'*'</span>) <span style="color: #c678dd;">AS</span> EMAIL_EMPLEADO,
+
     M.FIRST_NAME || <span style="color: #98c379;">' '</span> || M.LAST_NAME <span style="color: #c678dd;">AS</span> JEFE,
     <span style="color: #e5c07b;">LPAD</span>(<span style="color: #e5c07b;">SUBSTR</span>(M.EMAIL, 1, 3), 9, <span style="color: #98c379;">'*'</span>) <span style="color: #c678dd;">AS</span> EMAIL_JEFE
+
 <span style="color: #c678dd;">FROM</span> HR.EMPLOYEES E
 <span style="color: #c678dd;">LEFT JOIN</span> HR.EMPLOYEES M <span style="color: #c678dd;">ON</span> E.MANAGER_ID = M.EMPLOYEE_ID
 <span style="color: #c678dd;">ORDER BY</span> E.LAST_NAME;</code></pre>
