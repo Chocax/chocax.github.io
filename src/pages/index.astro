@@ -13,23 +13,37 @@ import Sidebar from "../components/Sidebar.astro";
         <div class="container">
           <main class="fold-content-container">
             <div class="fold-content" style="text-align: center; margin-top: 40px;">
-              <img src="/assets/tu-foto.jpg" alt="Santiago Pinzón" style="width: 180px; height: 180px; border-radius: 50%; border: 4px solid #fff; object-fit: cover; margin-bottom: 20px;" />
+              <div style="display: inline-block; position: relative; margin-bottom: 30px;">
+                <img 
+                  src="/assets/tu-foto.jpg" 
+                  alt="Santiago Pinzón" 
+                  style="width: 260px; height: 260px; border-radius: 50%; border: 6px solid #1a1a1a; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: cover;" 
+                />
+              </div>
               
-              <h1>Santiago Pinzón Vásquez</h1>
-              <h3 style="color: #888;">Estudiante de Ingeniería de Sistemas - 5to Semestre</h3>
+              <h1 style="font-size: 2.5rem; margin-bottom: 5px;">Santiago Pinzón Vásquez</h1>
+              <h3 style="color: #aaa; font-weight: 400; margin-bottom: 30px;">Estudiante de Ingeniería de Sistemas | 5to Semestre</h3>
               
-              <p class="lead" style="max-width: 600px; margin: 20px auto;">
-                Estudiante en la Universidad El Bosque. Soy alguien sencillo, dedicado y con la chispa necesaria para liderar proyectos. Me caracterizo por mis habilidades blandas, buena parla y la capacidad de resolver problemas con tecnologías como <strong>Java, Spring Boot, Python, C++ y MySQL</strong>.
-              </p>
+              <div class="bio-container" style="max-width: 750px; margin: 0 auto; text-align: left; background: #111; padding: 25px; border-radius: 15px; border-left: 4px solid #fff;">
+                <p class="lead" style="margin-bottom: 15px; line-height: 1.6;">
+                  Estudiante de la Universidad El Bosque con un enfoque analítico orientado a la <strong>infraestructura y redes de datos</strong>. Me apasiona comprender la arquitectura detrás de la tecnología, analizando el funcionamiento interno de los sistemas para garantizar su estabilidad y eficiencia.
+                </p>
+                <p class="lead" style="margin-bottom: 15px; line-height: 1.6;">
+                  Cuento con experiencia en el ciclo de desarrollo de aplicaciones web, habiendo liderado proyectos como plataformas de e-commerce y sistemas de gestión veterinaria. Mi enfoque no se limita al código; se centra en entender el "porqué" de cada proceso y cómo optimizarlo.
+                </p>
+                <p class="lead" style="line-height: 1.6;">
+                  Me destaco por un <strong>liderazgo versátil</strong>, adaptando mi comunicación y rol según las necesidades del equipo para asegurar el éxito del proyecto. Domino herramientas como <strong>Java, Spring Boot, Python, C++ y MySQL</strong>, siempre con la mira puesta en la escalabilidad y el rendimiento.
+                </p>
+              </div>
             </div>
             
-            <div style="margin-top: 50px; background: #161616; padding: 30px; border-radius: 20px; border: 1px solid #333;">
-               <h4 style="margin-bottom: 20px; color: #fff;">Video de Presentación</h4>
-               <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px;">
+            <div style="margin-top: 60px; background: #161616; padding: 30px; border-radius: 20px; border: 1px solid #333;">
+               <h4 style="margin-bottom: 20px; color: #fff; font-weight: 500;">Video de Presentación Profesional</h4>
+               <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000;">
                   <iframe 
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
                     src="https://www.youtube.com/embed/VIDEO_ID_AQUÍ" 
-                    title="Presentación Santiago" 
+                    title="Presentación Santiago Pinzón" 
                     frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
