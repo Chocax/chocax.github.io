@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config';
 
-// https://astro.build/config
 export default defineConfig({
-  site: 'spinzonv.github.io'
+  site: 'https://spinzonv.github.io', 
+  // Asegúrate de que tenga el https:// y que NO termine en una barra diagonal /
 });
