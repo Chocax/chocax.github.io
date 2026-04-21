@@ -44,26 +44,26 @@ const ejercicios = [
 <span style="color: #c678dd;">ORDER BY</span> E.LAST_NAME;`
   },
   {
-      id: "04",
-      titulo: "Serie Fibonacci hasta 100",
-      enunciado: "Desarrollar un bloque PL/SQL que calcule e imprima la secuencia de Fibonacci de manera iterativa, deteniéndose antes de superar el valor de 100.",
-      archivo: "ejercicio_04.sql",
-      codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
-  FECHA: 18/02/2026
-  DESCRIPCIÓN: Bloque anónimo en PL/SQL para generar la serie de Fibonacci hasta el límite de 100.
-  */</span>
-  <span style="color: #c678dd;">DECLARE</span>
-      vn_a <span style="color: #e5c07b;">NUMBER</span> := 0; 
-      vn_b <span style="color: #e5c07b;">NUMBER</span> := 1;
-  <span style="color: #c678dd;">BEGIN</span>
-      <span style="color: #c678dd;">WHILE</span> vn_a <= 100 <span style="color: #c678dd;">LOOP</span>
-          <span style="color: #e5c07b;">dbms_output.put_line</span>(vn_a); 
-          vn_b := vn_a + vn_b;  
-          vn_a := vn_b - vn_a; 
-      <span style="color: #c678dd;">END LOOP</span>;
-  <span style="color: #c678dd;">END</span>;
-  /`
-    },
+    id: "04",
+    titulo: "Serie Fibonacci hasta 100",
+    enunciado: "Desarrollar un bloque PL/SQL que calcule e imprima la secuencia de Fibonacci de manera iterativa, deteniéndose antes de superar el valor de 100.",
+    archivo: "ejercicio_04.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 18/02/2026
+DESCRIPCIÓN: Bloque anónimo en PL/SQL para generar la serie de Fibonacci hasta el límite de 100.
+*/</span>
+<span style="color: #c678dd;">DECLARE</span>
+    vn_a <span style="color: #e5c07b;">NUMBER</span> := 0; 
+    vn_b <span style="color: #e5c07b;">NUMBER</span> := 1;
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #c678dd;">WHILE</span> vn_a <= 100 <span style="color: #c678dd;">LOOP</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(vn_a); 
+        vn_b := vn_a + vn_b;  
+        vn_a := vn_b - vn_a; 
+    <span style="color: #c678dd;">END LOOP</span>;
+<span style="color: #c678dd;">END</span>;
+/`
+  },
   {
     id: "05",
     titulo: "Mínimo Común Múltiplo (MCM)",
@@ -112,6 +112,83 @@ DESCRIPCIÓN: Bloque PL/SQL que utiliza un ciclo FOR para encontrar la raíz cua
 <span style="color: #c678dd;">END</span>;
 /`
   },
+  {
+    id: "07",
+    titulo: "Stored Procedure: Saludo y Lógica de Fechas",
+    enunciado: "Creación de un procedimiento almacenado en PL/SQL que demuestra el uso de parámetros opcionales con valores por defecto, concatenación de cadenas y la identificación dinámica del último viernes de un mes específico.",
+    archivo: "ejercicio_07.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 23/02/2026
+DESCRIPCIÓN: Procedimiento almacenado que gestiona parámetros IN y realiza cálculos temporales avanzados con NEXT_DAY y LAST_DAY.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE PROCEDURE</span> sp_saludar (
+    param_nombre <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">VARCHAR2</span> <span style="color: #c678dd;">DEFAULT</span> <span style="color: #98c379;">'Millos'</span>,
+    param_fecha  <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">DATE</span>     <span style="color: #c678dd;">DEFAULT</span> <span style="color: #c678dd;">SYSDATE</span>
+)
+<span style="color: #c678dd;">IS</span>
+    vv_textoConcatenado <span style="color: #e5c07b;">VARCHAR2</span>(100);
+    vd_ultimoViernes    <span style="color: #e5c07b;">DATE</span>;
+<span style="color: #c678dd;">BEGIN</span>
+    vv_textoConcatenado := <span style="color: #98c379;">'Hola, '</span> || param_nombre || <span style="color: #98c379;">' tu papá '</span>;
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(vv_textoConcatenado);
+     
+    vd_ultimoViernes := <span style="color: #e5c07b;">NEXT_DAY</span>(<span style="color: #e5c07b;">LAST_DAY</span>(param_fecha) - 7, <span style="color: #98c379;">'VIERNES'</span>);
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'El ultimo viernes es '</span> || vd_ultimoViernes);
+<span style="color: #c678dd;">END</span> sp_saludar;
+/
+
+<span style="color: #5c6370;">-- Llamada al procedimiento</span>
+<span style="color: #c678dd;">BEGIN</span>
+    sp_saludar();
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+  {
+    id: "08",
+    titulo: "Cursor Dinámico: Empleados por Departamento",
+    enunciado: "Implementación de un bloque PL/SQL que utiliza un cursor explícito y una variable de sustitución (&) para filtrar y listar los empleados pertenecientes a un ID de departamento ingresado por consola.",
+    archivo: "ejercicio_08.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 02/03/2026
+DESCRIPCIÓN: Cursor dinámico que filtra empleados por ID de departamento usando variables de sustitución.
+*/</span>
+<span style="color: #c678dd;">DECLARE</span>
+    v_target_dept <span style="color: #e5c07b;">NUMBER</span> := &DIGITE_ID_DEPARTAMENTO;
+
+    <span style="color: #c678dd;">CURSOR</span> c_empleados <span style="color: #c678dd;">IS</span>
+      <span style="color: #c678dd;">SELECT</span> employee_id, first_name, last_name, department_id
+      <span style="color: #c678dd;">FROM</span> EMPLOYEES
+      <span style="color: #c678dd;">WHERE</span> department_id = v_target_dept;
+
+    v_emp c_empleados<span style="color: #e5c07b;">%ROWTYPE</span>;
+    v_contador <span style="color: #e5c07b;">NUMBER</span> := 0;
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'--- LISTADO PARA EL DEPARTAMENTO: '</span> || v_target_dept || <span style="color: #98c379;">' ---'</span>);
+
+    <span style="color: #c678dd;">OPEN</span> c_empleados;
+    <span style="color: #c678dd;">LOOP</span>
+        <span style="color: #c678dd;">FETCH</span> c_empleados <span style="color: #c678dd;">INTO</span> v_emp;
+        <span style="color: #c678dd;">EXIT WHEN</span> c_empleados<span style="color: #e5c07b;">%NOTFOUND</span>;
+        
+        v_contador := v_contador + 1;
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(
+            v_emp.employee_id || <span style="color: #98c379;">' - '</span> ||
+            v_emp.first_name || <span style="color: #98c379;">' '</span> ||
+            v_emp.last_name ||
+            <span style="color: #98c379;">' (Depto: '</span> || v_emp.department_id || <span style="color: #98c379;">')'</span>
+        );
+    <span style="color: #c678dd;">END LOOP</span>;
+    
+    <span style="color: #c678dd;">IF</span> v_contador = 0 <span style="color: #c678dd;">THEN</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'No se encontró a nadie en el ID: '</span> || v_target_dept);
+    <span style="color: #c678dd;">ELSE</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'Total de empleados: '</span> || v_contador);
+    <span style="color: #c678dd;">END IF</span>;
+
+    <span style="color: #c678dd;">CLOSE</span> c_empleados;
+<span style="color: #c678dd;">END</span>;
+/`
+  }
 ];
 ---
 
@@ -130,12 +207,12 @@ DESCRIPCIÓN: Bloque PL/SQL que utiliza un ciclo FOR para encontrar la raíz cua
             </h2>
             <div style="background: #1a1a1a; border-left: 4px solid #ffbd2e; padding: 15px 25px; border-radius: 4px;">
               <p style="color: #e0e0e0; font-size: 1.1rem; line-height: 1.6; margin: 0;">
-                Ejercicios desarrollados durante la asignatura de <strong>Bases de Datos II</strong>. Esta sección incluye retos de lógica, consultas complejas y aplicaciones prácticas realizadas tanto sobre el esquema de <strong>Recursos Humanos (HR)</strong> como en escenarios diversos de bases de datos relacionales.
+                Ejercicios desarrollados durante la asignatura de <strong>Bases de Datos II</strong>. Esta sección incluye retos de lógica, consultas complejas y aplicaciones prácticas.
               </p>
             </div>
           </header>
 
-          <div class="activities-stack" style="display: flex; flex-direction: column; gap: 90px;">
+          <div id="exercises-container" class="activities-stack" style="display: flex; flex-direction: column; gap: 90px;">
             {ejercicios.map((ej) => (
               <section class="activity-item">
                 <div style="margin-bottom: 35px;"> 
@@ -161,8 +238,73 @@ DESCRIPCIÓN: Bloque PL/SQL que utiliza un ciclo FOR para encontrar la raíz cua
               </section>
             ))}
           </div>
+
+          <div id="pagination-controls" style="margin-top: 80px; display: flex; justify-content: center; gap: 15px;">
+            </div>
+
         </div>
       </nav>
     </div>
+
+    <style>
+      .page-btn {
+        background: #1a1a1a;
+        color: #888;
+        border: 1px solid #333;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+      .page-btn:hover {
+        border-color: #ffbd2e;
+        color: #fff;
+      }
+      .page-btn.active {
+        background: #ffbd2e;
+        color: #000;
+        border-color: #ffbd2e;
+      }
+    </style>
+
+    <script>
+      const ITEMS_PER_PAGE = 5;
+      const container = document.getElementById('exercises-container');
+      const exercises = Array.from(container.getElementsByClassName('activity-item'));
+      const paginationControls = document.getElementById('pagination-controls');
+      
+      const totalPages = Math.ceil(exercises.length / ITEMS_PER_PAGE);
+
+      function showPage(pageNumber) {
+        const start = (pageNumber - 1) * ITEMS_PER_PAGE;
+        const end = start + ITEMS_PER_PAGE;
+
+        exercises.forEach((ex, index) => {
+          ex.style.display = (index >= start && index < end) ? 'block' : 'none';
+        });
+
+        // Actualizar botones
+        document.querySelectorAll('.page-btn').forEach(btn => {
+          btn.classList.toggle('active', parseInt(btn.innerText) === pageNumber);
+        });
+
+        // Scroll suave arriba
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Generar botones
+      for (let i = 1; i <= totalPages; i++) {
+        const btn = document.createElement('button');
+        btn.innerText = i;
+        btn.className = 'page-btn';
+        btn.onclick = () => showPage(i);
+        paginationControls.appendChild(btn);
+      }
+
+      // Mostrar la primera página al cargar
+      showPage(1);
+    </script>
+
   </body>
 </html>
