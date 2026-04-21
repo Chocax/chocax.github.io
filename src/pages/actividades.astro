@@ -112,20 +112,505 @@ DESCRIPCIÓN: Bloque PL/SQL para encontrar la raíz cuadrada entera.
 <span style="color: #c678dd;">END</span>;
 /`
   },
-  {
+{
     id: "07",
-    titulo: "Stored Procedure: Saludo",
-    enunciado: "Procedimiento almacenado con parámetros opcionales y lógica de fechas.",
+    titulo: "Stored Procedure: Saludo y Lógica de Fechas",
+    enunciado: "Creación de un procedimiento almacenado en PL/SQL que demuestra el uso de parámetros opcionales con valores por defecto, concatenación de cadenas y la identificación dinámica del último viernes de un mes específico.",
     archivo: "ejercicio_07.sql",
-    codigo: `<span style="color: #c678dd;">CREATE OR REPLACE PROCEDURE</span> sp_saludar (...)`
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 23/02/2026
+DESCRIPCIÓN: Procedimiento almacenado que gestiona parámetros IN y realiza cálculos temporales avanzados con NEXT_DAY y LAST_DAY.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE PROCEDURE</span> sp_saludar (
+    param_nombre <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">VARCHAR2</span> <span style="color: #c678dd;">DEFAULT</span> <span style="color: #98c379;">'Millos'</span>,
+    param_fecha  <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">DATE</span>     <span style="color: #c678dd;">DEFAULT</span> <span style="color: #c678dd;">SYSDATE</span>
+)
+<span style="color: #c678dd;">IS</span>
+    vv_textoConcatenado <span style="color: #e5c07b;">VARCHAR2</span>(100);
+    vd_ultimoViernes    <span style="color: #e5c07b;">DATE</span>;
+<span style="color: #c678dd;">BEGIN</span>
+    vv_textoConcatenado := <span style="color: #98c379;">'Hola, '</span> || param_nombre || <span style="color: #98c379;">' tu papá '</span>;
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(vv_textoConcatenado);
+     
+    vd_ultimoViernes := <span style="color: #e5c07b;">NEXT_DAY</span>(<span style="color: #e5c07b;">LAST_DAY</span>(param_fecha) - 7, <span style="color: #98c379;">'VIERNES'</span>);
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'El ultimo viernes es '</span> || vd_ultimoViernes);
+<span style="color: #c678dd;">END</span> sp_saludar;
+/
+
+<span style="color: #5c6370;">-- Llamada al procedimiento</span>
+<span style="color: #c678dd;">BEGIN</span>
+    sp_saludar();
+<span style="color: #c678dd;">END</span>;
+/`
   },
-  {
+{
     id: "08",
-    titulo: "Cursor Dinámico",
-    enunciado: "Uso de cursores explícitos con variables de sustitución (&).",
+    titulo: "Cursor Dinámico: Empleados por Departamento",
+    enunciado: "Implementación de un bloque PL/SQL que utiliza un cursor explícito y una variable de sustitución (&) para filtrar y listar los empleados pertenecientes a un ID de departamento ingresado por consola.",
     archivo: "ejercicio_08.sql",
-    codigo: `<span style="color: #c678dd;">DECLARE</span> v_target_dept <span style="color: #e5c07b;">NUMBER</span> := &ID; ...`
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 02/03/2026
+DESCRIPCIÓN: Cursor dinámico que filtra empleados por ID de departamento usando variables de sustitución.
+*/</span>
+<span style="color: #c678dd;">DECLARE</span>
+    v_target_dept <span style="color: #e5c07b;">NUMBER</span> := &DIGITE_ID_DEPARTAMENTO;
+
+    <span style="color: #c678dd;">CURSOR</span> c_empleados <span style="color: #c678dd;">IS</span>
+      <span style="color: #c678dd;">SELECT</span> employee_id, first_name, last_name, department_id
+      <span style="color: #c678dd;">FROM</span> EMPLOYEES
+      <span style="color: #c678dd;">WHERE</span> department_id = v_target_dept;
+
+    v_emp c_empleados<span style="color: #e5c07b;">%ROWTYPE</span>;
+    v_contador <span style="color: #e5c07b;">NUMBER</span> := 0;
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'--- LISTADO PARA EL DEPARTAMENTO: '</span> || v_target_dept || <span style="color: #98c379;">' ---'</span>);
+
+    <span style="color: #c678dd;">OPEN</span> c_empleados;
+    <span style="color: #c678dd;">LOOP</span>
+        <span style="color: #c678dd;">FETCH</span> c_empleados <span style="color: #c678dd;">INTO</span> v_emp;
+        <span style="color: #c678dd;">EXIT WHEN</span> c_empleados<span style="color: #e5c07b;">%NOTFOUND</span>;
+        
+        v_contador := v_contador + 1;
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(
+            v_emp.employee_id || <span style="color: #98c379;">' - '</span> ||
+            v_emp.first_name || <span style="color: #98c379;">' '</span> ||
+            v_emp.last_name ||
+            <span style="color: #98c379;">' (Depto: '</span> || v_emp.department_id || <span style="color: #98c379;">')'</span>
+        );
+    <span style="color: #c678dd;">END LOOP</span>;
+    
+    <span style="color: #c678dd;">IF</span> v_contador = 0 <span style="color: #c678dd;">THEN</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'No se encontró a nadie en el ID: '</span> || v_target_dept);
+    <span style="color: #c678dd;">ELSE</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'Total de empleados: '</span> || v_contador);
+    <span style="color: #c678dd;">END IF</span>;
+
+    <span style="color: #c678dd;">CLOSE</span> c_empleados;
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+
+  {
+    id: "09",
+    titulo: "Reporte de Nómina Mensual",
+    enunciado: "Generación de un reporte detallado de nómina mediante el uso de cursores con ciclos FOR. El script permite filtrar por mes y año a través de variables de sustitución, formateando la salida en consola con funciones de alineación para presentar una estructura de tabla.",
+    archivo: "ejercicio_09.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 02/03/2026
+DESCRIPCIÓN: Reporte de nómina detallado con formato de tabla, manejo de joins y variables de sustitución.
+*/</span>
+<span style="color: #c678dd;">DECLARE</span>
+    <span style="color: #5c6370;">-- Capturamos mes y año con el "scanner" (&)</span>
+    v_mes  <span style="color: #e5c07b;">VARCHAR2</span>(2) := <span style="color: #98c379;">'&MM_EJ_02'</span>;
+    v_anio <span style="color: #e5c07b;">VARCHAR2</span>(4) := <span style="color: #98c379;">'&YYYY_EJ_2026'</span>;
+    
+    <span style="color: #c678dd;">CURSOR</span> c_nomina <span style="color: #c678dd;">IS</span>
+        <span style="color: #c678dd;">SELECT</span> 
+            p.employee_id,
+            e.first_name || <span style="color: #98c379;">' '</span> || e.last_name <span style="color: #c678dd;">as</span> nombre_completo,
+            p.gross_total,
+            p.ded_total,
+            p.net_total,
+            p.status
+        <span style="color: #c678dd;">FROM</span> pay_payslips p
+        <span style="color: #c678dd;">JOIN</span> employees e <span style="color: #c678dd;">ON</span> p.employee_id = e.employee_id
+        <span style="color: #c678dd;">WHERE</span> <span style="color: #e5c07b;">TO_CHAR</span>(p.calc_date, <span style="color: #98c379;">'MM'</span>) = v_mes
+          <span style="color: #c678dd;">AND</span> <span style="color: #e5c07b;">TO_CHAR</span>(p.calc_date, <span style="color: #98c379;">'YYYY'</span>) = v_anio;
+
+    v_total_nomina <span style="color: #e5c07b;">NUMBER</span> := 0;
+    v_conteo_emp   <span style="color: #e5c07b;">NUMBER</span> := 0;
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'================================================================'</span>);
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'REPORTE DE NÓMINA: '</span> || v_mes || <span style="color: #98c379;">'/'</span> || v_anio);
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'================================================================'</span>);
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'ID EMP  | NOMBRE               | BRUTO      | DEDUC.    | NETO'</span>);
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'----------------------------------------------------------------'</span>);
+
+    <span style="color: #5c6370;">-- Recorremos con un FOR para que sea más eficiente (apertura y cierre automático)</span>
+    <span style="color: #c678dd;">FOR</span> r_nom <span style="color: #c678dd;">IN</span> c_nomina <span style="color: #c678dd;">LOOP</span>
+        v_conteo_emp := v_conteo_emp + 1;
+        v_total_nomina := v_total_nomina + r_nom.net_total;
+        
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(
+            <span style="color: #e5c07b;">RPAD</span>(r_nom.employee_id, 8) || <span style="color: #98c379;">' | '</span> ||
+            <span style="color: #e5c07b;">RPAD</span>(<span style="color: #e5c07b;">SUBSTR</span>(r_nom.nombre_completo, 1, 20), 20) || <span style="color: #98c379;">' | '</span> ||
+            <span style="color: #e5c07b;">LPAD</span>(<span style="color: #e5c07b;">TO_CHAR</span>(r_nom.gross_total, <span style="color: #98c379;">'999,999,999'</span>), 10) || <span style="color: #98c379;">' | '</span> ||
+            <span style="color: #e5c07b;">LPAD</span>(<span style="color: #e5c07b;">TO_CHAR</span>(r_nom.ded_total, <span style="color: #98c379;">'999,999,999'</span>), 9) || <span style="color: #98c379;">' | '</span> ||
+            <span style="color: #e5c07b;">LPAD</span>(<span style="color: #e5c07b;">TO_CHAR</span>(r_nom.net_total, <span style="color: #98c379;">'999,999,999'</span>), 10)
+        );
+    <span style="color: #c678dd;">END LOOP</span>;
+
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'----------------------------------------------------------------'</span>);
+    
+    <span style="color: #c678dd;">IF</span> v_conteo_emp = 0 <span style="color: #c678dd;">THEN</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'AVISO: No se encontraron registros para ese periodo.'</span>);
+    <span style="color: #c678dd;">ELSE</span>
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'Resumen:'</span>);
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'Total Empleados Pagados: '</span> || v_conteo_emp);
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'Costo Total Nómina (Neto): $'</span> || <span style="color: #e5c07b;">TO_CHAR</span>(v_total_nomina, <span style="color: #98c379;">'999,999,999,999'</span>));
+    <span style="color: #c678dd;">END IF</span>;
+    
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'================================================================'</span>);
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+
+  {
+    id: "10",
+    titulo: "Función: Cálculo de Integral Definida",
+    enunciado: "Implementación de una función almacenada (Stored Function) para calcular la integral definida de la potencia x^n en un intervalo [a, b], aplicando la regla fundamental del cálculo para potencias.",
+    archivo: "ejercicio_10.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 04/03/2026
+DESCRIPCIÓN: Función que calcula la integral definida de x^n en el intervalo [a, b].
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE FUNCTION</span> fn_integral_basica (
+    vn_a <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">NUMBER</span>, 
+    vn_b <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">NUMBER</span>, 
+    vn_n <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">NUMBER</span>
+) 
+<span style="color: #c678dd;">RETURN</span> <span style="color: #e5c07b;">NUMBER</span> 
+<span style="color: #c678dd;">IS</span>
+    vn_resultado <span style="color: #e5c07b;">NUMBER</span>;
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #5c6370;">-- Aplicación de la fórmula: (b^(n+1) / (n+1)) - (a^(n+1) / (n+1))</span>
+    vn_resultado := (<span style="color: #e5c07b;">POWER</span>(vn_b, vn_n + 1) / (vn_n + 1)) - (<span style="color: #e5c07b;">POWER</span>(vn_a, vn_n + 1) / (vn_n + 1));
+    <span style="color: #c678dd;">RETURN</span> vn_resultado;
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+
+  {
+    id: "11",
+    titulo: "Función: Cálculo de Edad Precisa",
+    enunciado: "Desarrollo de una función almacenada que recibe una fecha de nacimiento y retorna la edad exacta en años, utilizando MONTHS_BETWEEN para garantizar precisión independientemente de los años bisiestos.",
+    archivo: "ejercicio_11.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 04/03/2026
+DESCRIPCIÓN: Función que calcula la edad actual a partir de una fecha dada.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE FUNCTION</span> fn_calcular_edad (
+    pd_fecha_nac <span style="color: #c678dd;">IN</span> <span style="color: #e5c07b;">DATE</span>
+) 
+<span style="color: #c678dd;">RETURN</span> <span style="color: #e5c07b;">NUMBER</span> 
+<span style="color: #c678dd;">IS</span>
+    vn_edad <span style="color: #e5c07b;">NUMBER</span>;
+<span style="color: #c678dd;">BEGIN</span>
+    vn_edad := <span style="color: #e5c07b;">TRUNC</span>(<span style="color: #e5c07b;">MONTHS_BETWEEN</span>(<span style="color: #c678dd;">SYSDATE</span>, pd_fecha_nac) / 12);
+    <span style="color: #c678dd;">RETURN</span> vn_edad;
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+
+  {
+    id: "12",
+    titulo: "Trigger: Validación de Aumento Salarial",
+    enunciado: "Implementación de un disparador (trigger) de nivel de fila que impide que un salario sea modificado por un valor inferior al actual, protegiendo la integridad de la escala salarial de la empresa.",
+    archivo: "ejercicio_12.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 09/03/2026
+DESCRIPCIÓN: Trigger BEFORE UPDATE para validar que no se reduzcan salarios.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE TRIGGER</span> tr_validar_salario
+<span style="color: #c678dd;">BEFORE UPDATE OF</span> salary <span style="color: #c678dd;">ON</span> employees
+<span style="color: #c678dd;">FOR EACH ROW</span>
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #c678dd;">IF</span> :NEW.salary < :OLD.salary <span style="color: #c678dd;">THEN</span>
+        <span style="color: #e5c07b;">RAISE_APPLICATION_ERROR</span>(-20001, <span style="color: #98c379;">'Error: El nuevo salario no puede ser menor al actual.'</span>);
+    <span style="color: #c678dd;">END IF</span>;
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+
+  {
+    id: "13",
+    titulo: "Trigger: Auditoría de Movimientos",
+    enunciado: "Creación de un disparador automático que registra en una tabla histórica cada vez que un empleado cambia de departamento, capturando los valores anteriores, nuevos y la fecha del movimiento para trazabilidad.",
+    archivo: "ejercicio_13.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 09/03/2026
+DESCRIPCIÓN: Trigger AFTER UPDATE para auditar traslados de departamento.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE TRIGGER</span> tr_auditoria_depto
+<span style="color: #c678dd;">AFTER UPDATE OF</span> department_id <span style="color: #c678dd;">ON</span> employees
+<span style="color: #c678dd;">FOR EACH ROW</span>
+<span style="color: #c678dd;">BEGIN</span>
+    <span style="color: #c678dd;">INSERT INTO</span> log_cambios_dept (
+        employee_id, depto_antiguo, depto_nuevo, fecha_cambio
+    ) <span style="color: #c678dd;">VALUES</span> (
+        :OLD.employee_id, :OLD.department_id, :NEW.department_id, <span style="color: #c678dd;">SYSDATE</span>
+    );
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+
+  {
+    id: "14",
+    titulo: "Package Spec: Gestión de Nómina",
+    enunciado: "Definición de la especificación de un paquete para la gestión centralizada de pagos, estableciendo los procedimientos y funciones públicas para el cálculo de bonificaciones y procesamiento de salarios.",
+    archivo: "pkg_nomina_h.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 23/03/2026
+DESCRIPCIÓN: Especificación del paquete para la gestión de nómina de empleados.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE PACKAGE</span> pkg_gestion_nomina <span style="color: #c678dd;">IS</span>
+    <span style="color: #5c6370;">-- Constante global del paquete</span>
+    gn_bono_transporte <span style="color: #c678dd;">CONSTANT</span> <span style="color: #e5c07b;">NUMBER</span> := 140000;
+
+    <span style="color: #c678dd;">PROCEDURE</span> sp_procesar_pago (pn_emp_id <span style="color: #e5c07b;">NUMBER</span>);
+    <span style="color: #c678dd;">FUNCTION</span> fn_get_bonificacion (pn_salario <span style="color: #e5c07b;">NUMBER</span>) <span style="color: #c678dd;">RETURN</span> <span style="color: #e5c07b;">NUMBER</span>;
+<span style="color: #c678dd;">END</span> pkg_gestion_nomina;
+/`
+  },
+
+  {
+    id: "15",
+    titulo: "Package Body: Gestión de Nómina",
+    enunciado: "Implementación de la lógica de negocio para el procesamiento de pagos. Incluye el cálculo automático de bonificaciones según el rango salarial y la actualización de registros en el esquema HR.",
+    archivo: "pkg_nomina_b.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 25/03/2026
+DESCRIPCIÓN: Implementación de la lógica del paquete de nómina.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE PACKAGE BODY</span> pkg_gestion_nomina <span style="color: #c678dd;">IS</span>
+
+    <span style="color: #c678dd;">FUNCTION</span> fn_get_bonificacion (pn_salario <span style="color: #e5c07b;">NUMBER</span>) <span style="color: #c678dd;">RETURN</span> <span style="color: #e5c07b;">NUMBER</span> <span style="color: #c678dd;">IS</span>
+    <span style="color: #c678dd;">BEGIN</span>
+        <span style="color: #c678dd;">IF</span> pn_salario < 3000 <span style="color: #c678dd;">THEN</span>
+            <span style="color: #c678dd;">RETURN</span> pn_salario * 0.10;
+        <span style="color: #c678dd;">ELSE</span>
+            <span style="color: #c678dd;">RETURN</span> pn_salario * 0.05;
+        <span style="color: #c678dd;">END IF</span>;
+    <span style="color: #c678dd;">END</span> fn_get_bonificacion;
+
+    <span style="color: #c678dd;">PROCEDURE</span> sp_procesar_pago (pn_emp_id <span style="color: #e5c07b;">NUMBER</span>) <span style="color: #c678dd;">IS</span>
+        vn_salario <span style="color: #e5c07b;">NUMBER</span>;
+    <span style="color: #c678dd;">BEGIN</span>
+        <span style="color: #c678dd;">SELECT</span> salary <span style="color: #c678dd;">INTO</span> vn_salario <span style="color: #c678dd;">FROM</span> employees <span style="color: #c678dd;">WHERE</span> employee_id = pn_emp_id;
+        <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'Pago procesado: '</span> || (vn_salario + fn_get_bonificacion(vn_salario)));
+    <span style="color: #c678dd;">END</span> sp_procesar_pago;
+
+<span style="color: #c678dd;">END</span> pkg_gestion_nomina;
+/`
+  },
+
+
+  {
+    id: "16",
+    titulo: "Package Spec: Logs de Auditoría",
+    enunciado: "Definición de componentes para el rastreo de eventos en la base de datos, permitiendo estandarizar la forma en que se registran errores y movimientos de usuarios.",
+    archivo: "pkg_auditoria_h.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 23/03/2026
+DESCRIPCIÓN: Especificación del paquete para auditoría y log de errores.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE PACKAGE</span> pkg_auditoria <span style="color: #c678dd;">IS</span>
+    <span style="color: #c678dd;">PROCEDURE</span> sp_registrar_log (pv_mensaje <span style="color: #e5c07b;">VARCHAR2</span>, pv_tipo <span style="color: #e5c07b;">VARCHAR2</span>);
+    <span style="color: #c678dd;">FUNCTION</span> fn_verificar_acceso (pn_usuario_id <span style="color: #e5c07b;">NUMBER</span>) <span style="color: #c678dd;">RETURN</span> <span style="color: #c678dd;">BOOLEAN</span>;
+<span style="color: #c678dd;">END pkg_auditoria</span>;
+/`
+  },
+
+  {
+    id: "17",
+    titulo: "Package Body: Logs de Auditoría",
+    enunciado: "Implementación de los servicios de auditoría. Incluye lógica de persistencia para mensajes de log y validación de perfiles de acceso mediante consultas al sistema.",
+    archivo: "pkg_auditoria_b.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 25/03/2026
+DESCRIPCIÓN: Body del paquete de auditoría con persistencia en tablas de log.
+*/</span>
+<span style="color: #c678dd;">CREATE OR REPLACE PACKAGE BODY</span> pkg_auditoria <span style="color: #c678dd;">IS</span>
+
+    <span style="color: #c678dd;">PROCEDURE</span> sp_registrar_log (pv_mensaje <span style="color: #e5c07b;">VARCHAR2</span>, pv_tipo <span style="color: #e5c07b;">VARCHAR2</span>) <span style="color: #c678dd;">IS</span>
+    <span style="color: #c678dd;">BEGIN</span>
+        <span style="color: #c678dd;">INSERT INTO</span> log_sistema (mensaje, tipo, fecha) 
+        <span style="color: #c678dd;">VALUES</span> (pv_mensaje, pv_tipo, <span style="color: #c678dd;">SYSDATE</span>);
+        <span style="color: #c678dd;">COMMIT</span>;
+    <span style="color: #c678dd;">END</span> sp_registrar_log;
+
+    <span style="color: #c678dd;">FUNCTION</span> fn_verificar_acceso (pn_usuario_id <span style="color: #e5c07b;">NUMBER</span>) <span style="color: #c678dd;">RETURN</span> <span style="color: #c678dd;">BOOLEAN</span> <span style="color: #c678dd;">IS</span>
+        vn_existe <span style="color: #e5c07b;">NUMBER</span>;
+    <span style="color: #c678dd;">BEGIN</span>
+        <span style="color: #c678dd;">SELECT COUNT</span>(*) <span style="color: #c678dd;">INTO</span> vn_existe <span style="color: #c678dd;">FROM</span> usuarios_activos <span style="color: #c678dd;">WHERE</span> id = pn_usuario_id;
+        <span style="color: #c678dd;">RETURN</span> (vn_existe > 0);
+    <span style="color: #c678dd;">END</span> fn_verificar_acceso;
+
+<span style="color: #c678dd;">END</span> pkg_auditoria;
+/`
+  },
+
+  {
+    id: "18",
+    titulo: "Consulta Diagnóstica de Nómina y Desempeño",
+    enunciado: "Implementación de una consulta avanzada mediante CTEs (Common Table Expressions) para generar un reporte integral. Se calculan promedios salariales por departamento, brechas de salario (Gap Analysis), antigüedad y rangos mediante funciones de ventana (Window Functions), permitiendo un diagnóstico detallado de la estructura organizacional.",
+    archivo: "ejercicio_18.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTORES: SANTIAGO PINZÓN VÁSQUEZ - JAIBER DIAZ
+FECHA: 08/04/2026
+DESCRIPCIÓN: Query avanzada con CTEs y funciones analíticas para auditoría salarial.
+*/</span>
+<span style="color: #c678dd;">WITH</span> v_var <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> * <span style="color: #c678dd;">FROM</span> t1_variants <span style="color: #c678dd;">WHERE</span> variant_id = &p_variant_id
+),
+dept_stats <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> department_id,
+           <span style="color: #e5c07b;">ROUND</span>(<span style="color: #e5c07b;">AVG</span>(salary), 2) <span style="color: #c678dd;">AS</span> dept_avg_salary,
+           <span style="color: #e5c07b;">MAX</span>(salary) <span style="color: #c678dd;">AS</span> dept_max_salary,
+           <span style="color: #e5c07b;">COUNT</span>(employee_id) <span style="color: #c678dd;">AS</span> dept_employee_count
+    <span style="color: #c678dd;">FROM</span> t1_employees
+    <span style="color: #c678dd;">GROUP BY</span> department_id
+),
+job_hist <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> employee_id, <span style="color: #e5c07b;">MAX</span>(end_date) <span style="color: #c678dd;">AS</span> last_end_date
+    <span style="color: #c678dd;">FROM</span> t1_job_history
+    <span style="color: #c678dd;">GROUP BY</span> employee_id
+)
+<span style="color: #c678dd;">SELECT</span> e.employee_id,
+       e.first_name,
+       e.last_name,
+       d.department_name,
+       e.salary,
+       <span style="color: #e5c07b;">TRUNC</span>(<span style="color: #e5c07b;">MONTHS_BETWEEN</span>(<span style="color: #c678dd;">SYSDATE</span>, e.hire_date) / 12) <span style="color: #c678dd;">AS</span> years_service,
+       ds.dept_avg_salary,
+       <span style="color: #c678dd;">CASE WHEN</span> e.salary < ds.dept_avg_salary 
+            <span style="color: #c678dd;">THEN</span> <span style="color: #e5c07b;">ROUND</span>(((ds.dept_avg_salary - e.salary) / ds.dept_avg_salary) * 100, 2)
+            <span style="color: #c678dd;">ELSE</span> 0 
+       <span style="color: #c678dd;">END AS</span> pct_gap_to_avg,
+       <span style="color: #e5c07b;">RANK</span>() <span style="color: #c678dd;">OVER</span> (<span style="color: #c678dd;">PARTITION BY</span> e.department_id <span style="color: #c678dd;">ORDER BY</span> e.salary <span style="color: #c678dd;">DESC</span>) <span style="color: #c678dd;">AS</span> salary_rank
+<span style="color: #c678dd;">FROM</span> t1_employees e
+<span style="color: #c678dd;">LEFT JOIN</span> t1_departments d <span style="color: #c678dd;">ON</span> e.department_id = d.department_id
+<span style="color: #c678dd;">LEFT JOIN</span> dept_stats ds <span style="color: #c678dd;">ON</span> e.department_id = ds.department_id
+<span style="color: #c678dd;">LEFT JOIN</span> job_hist jh <span style="color: #c678dd;">ON</span> e.employee_id = jh.employee_id
+<span style="color: #c678dd;">ORDER BY</span> e.department_id, e.salary <span style="color: #c678dd;">DESC</span>;`
+  },
+
+  {
+    id: "18",
+    titulo: "Consulta Diagnóstica de Nómina y Desempeño",
+    enunciado: "Implementación de una consulta avanzada mediante CTEs (Common Table Expressions) para generar un reporte integral. Se calculan promedios salariales por departamento, brechas de salario (Gap Analysis), antigüedad y rangos mediante funciones de ventana (Window Functions), permitiendo un diagnóstico detallado de la estructura organizacional.",
+    archivo: "ejercicio_18.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTORES: SANTIAGO PINZÓN VÁSQUEZ - JAIBER DIAZ
+FECHA: 08/04/2026
+DESCRIPCIÓN: Query avanzada con CTEs y funciones analíticas para auditoría salarial.
+*/</span>
+<span style="color: #c678dd;">WITH</span> v_var <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> * <span style="color: #c678dd;">FROM</span> t1_variants <span style="color: #c678dd;">WHERE</span> variant_id = &p_variant_id
+),
+dept_stats <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> department_id,
+           <span style="color: #e5c07b;">ROUND</span>(<span style="color: #e5c07b;">AVG</span>(salary), 2) <span style="color: #c678dd;">AS</span> dept_avg_salary,
+           <span style="color: #e5c07b;">MAX</span>(salary) <span style="color: #c678dd;">AS</span> dept_max_salary,
+           <span style="color: #e5c07b;">COUNT</span>(employee_id) <span style="color: #c678dd;">AS</span> dept_employee_count
+    <span style="color: #c678dd;">FROM</span> t1_employees
+    <span style="color: #c678dd;">GROUP BY</span> department_id
+),
+job_hist <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> employee_id, <span style="color: #e5c07b;">MAX</span>(end_date) <span style="color: #c678dd;">AS</span> last_end_date
+    <span style="color: #c678dd;">FROM</span> t1_job_history
+    <span style="color: #c678dd;">GROUP BY</span> employee_id
+)
+<span style="color: #c678dd;">SELECT</span> e.employee_id,
+       e.first_name,
+       e.last_name,
+       d.department_name,
+       e.salary,
+       <span style="color: #e5c07b;">TRUNC</span>(<span style="color: #e5c07b;">MONTHS_BETWEEN</span>(<span style="color: #c678dd;">SYSDATE</span>, e.hire_date) / 12) <span style="color: #c678dd;">AS</span> years_service,
+       ds.dept_avg_salary,
+       <span style="color: #c678dd;">CASE WHEN</span> e.salary < ds.dept_avg_salary 
+            <span style="color: #c678dd;">THEN</span> <span style="color: #e5c07b;">ROUND</span>(((ds.dept_avg_salary - e.salary) / ds.dept_avg_salary) * 100, 2)
+            <span style="color: #c678dd;">ELSE</span> 0 
+       <span style="color: #c678dd;">END AS</span> pct_gap_to_avg,
+       <span style="color: #e5c07b;">RANK</span>() <span style="color: #c678dd;">OVER</span> (<span style="color: #c678dd;">PARTITION BY</span> e.department_id <span style="color: #c678dd;">ORDER BY</span> e.salary <span style="color: #c678dd;">DESC</span>) <span style="color: #c678dd;">AS</span> salary_rank
+<span style="color: #c678dd;">FROM</span> t1_employees e
+<span style="color: #c678dd;">LEFT JOIN</span> t1_departments d <span style="color: #c678dd;">ON</span> e.department_id = d.department_id
+<span style="color: #c678dd;">LEFT JOIN</span> dept_stats ds <span style="color: #c678dd;">ON</span> e.department_id = ds.department_id
+<span style="color: #c678dd;">LEFT JOIN</span> job_hist jh <span style="color: #c678dd;">ON</span> e.employee_id = jh.employee_id
+<span style="color: #c678dd;">ORDER BY</span> e.department_id, e.salary <span style="color: #c678dd;">DESC</span>;`
+  },
+
+  {
+    id: "19",
+    titulo: "Motor de Reglas: Elegibilidad y Ajuste Salarial",
+    enunciado: "Desarrollo de un sistema de reglas complejo mediante SQL avanzado. La consulta utiliza múltiples CTEs para cruzar variantes de control con estadísticas departamentales e historiales laborales. Implementa un árbol de decisión con lógica CASE para determinar la elegibilidad de empleados, motivos de exclusión y porcentajes de ajuste dinámico basados en brechas salariales.",
+    archivo: "ejercicio_19.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTORES: SANTIAGO PINZÓN VÁSQUEZ - JAIBER DIAZ
+FECHA: 08/04/2026
+DESCRIPCIÓN: Query de alta complejidad para la determinación automática de elegibilidad y ajustes de nómina.
+*/</span>
+<span style="color: #c678dd;">WITH</span> v_var <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> * <span style="color: #c678dd;">FROM</span> t1_variants <span style="color: #c678dd;">WHERE</span> variant_id = &p_variant_id
+),
+dept_stats <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> department_id, <span style="color: #e5c07b;">ROUND</span>(<span style="color: #e5c07b;">AVG</span>(salary), 2) <span style="color: #c678dd;">AS</span> dept_avg_salary, 
+           <span style="color: #e5c07b;">MAX</span>(salary) <span style="color: #c678dd;">AS</span> dept_max_salary, <span style="color: #e5c07b;">COUNT</span>(employee_id) <span style="color: #c678dd;">AS</span> dept_employee_count
+    <span style="color: #c678dd;">FROM</span> t1_employees <span style="color: #c678dd;">GROUP BY</span> department_id
+),
+job_hist <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> employee_id, <span style="color: #e5c07b;">MAX</span>(end_date) <span style="color: #c678dd;">AS</span> last_end_date 
+    <span style="color: #c678dd;">FROM</span> t1_job_history <span style="color: #c678dd;">GROUP BY</span> employee_id
+),
+base_data <span style="color: #c678dd;">AS</span> (
+    <span style="color: #c678dd;">SELECT</span> e.employee_id, e.first_name, e.last_name, e.department_id, e.salary,
+           <span style="color: #e5c07b;">TRUNC</span>(<span style="color: #e5c07b;">MONTHS_BETWEEN</span>(<span style="color: #c678dd;">SYSDATE</span>, e.hire_date) / 12) <span style="color: #c678dd;">AS</span> years_service,
+           ds.dept_avg_salary, ds.dept_employee_count,
+           <span style="color: #c678dd;">CASE WHEN</span> e.salary < ds.dept_avg_salary <span style="color: #c678dd;">THEN</span> <span style="color: #e5c07b;">ROUND</span>(((ds.dept_avg_salary - e.salary) / ds.dept_avg_salary) * 100, 2) <span style="color: #c678dd;">ELSE</span> 0 <span style="color: #c678dd;">END AS</span> pct_gap_to_avg,
+           <span style="color: #c678dd;">CASE WHEN</span> jh.last_end_date <span style="color: #c678dd;">IS NOT NULL AND</span> <span style="color: #e5c07b;">MONTHS_BETWEEN</span>(<span style="color: #c678dd;">SYSDATE</span>, jh.last_end_date) <= v.recent_job_history_months <span style="color: #c678dd;">THEN</span> <span style="color: #98c379;">'SI'</span> <span style="color: #c678dd;">ELSE</span> <span style="color: #98c379;">'NO'</span> <span style="color: #c678dd;">END AS</span> recent_job_history_flag,
+           v.excluded_department_id, v.min_years_service, v.gap_high_threshold_pct, v.raise_high_pct,
+           <span style="color: #e5c07b;">ROUND</span>(ds.dept_avg_salary * (v.max_salary_vs_avg_pct / 100), 2) <span style="color: #c678dd;">AS</span> max_allowed_salary
+    <span style="color: #c678dd;">FROM</span> t1_employees e
+    <span style="color: #c678dd;">LEFT JOIN</span> dept_stats ds <span style="color: #c678dd;">ON</span> e.department_id = ds.department_id
+    <span style="color: #c678dd;">LEFT JOIN</span> job_hist jh <span style="color: #c678dd;">ON</span> e.employee_id = jh.employee_id
+    <span style="color: #c678dd;">CROSS JOIN</span> v_var v
+)
+<span style="color: #c678dd;">SELECT</span> employee_id, first_name, last_name, 
+       <span style="color: #c678dd;">CASE</span> 
+           <span style="color: #c678dd;">WHEN</span> department_id = excluded_department_id <span style="color: #c678dd;">THEN</span> <span style="color: #98c379;">'DEPTO_EXCLUIDO'</span>
+           <span style="color: #c678dd;">WHEN</span> years_service < min_years_service <span style="color: #c678dd;">THEN</span> <span style="color: #98c379;">'ANTIGUEDAD_INSUFICIENTE'</span>
+           <span style="color: #c678dd;">WHEN</span> salary >= max_allowed_salary <span style="color: #c678dd;">THEN</span> <span style="color: #98c379;">'SALARIO_NO_APLICA'</span>
+           <span style="color: #c678dd;">ELSE</span> <span style="color: #98c379;">'NINGUNA'</span>
+       <span style="color: #c678dd;">END AS</span> exclusion_reason,
+       <span style="color: #c678dd;">CASE</span> 
+           <span style="color: #c678dd;">WHEN</span> years_service >= min_years_service <span style="color: #c678dd;">AND</span> salary < max_allowed_salary 
+           <span style="color: #c678dd;">THEN</span> <span style="color: #98c379;">'ELEGIBLE'</span> <span style="color: #c678dd;">ELSE</span> <span style="color: #98c379;">'NO_ELEGIBLE'</span>
+       <span style="color: #c678dd;">END AS</span> eligibility_flag
+<span style="color: #c678dd;">FROM</span> base_data;`
+  },
+
+  {
+    id: "20",
+    titulo: "Actualización Masiva: MERGE con Escudo de Integridad",
+    enunciado: "Implementación de una sentencia MERGE compleja para la actualización de salarios. El script integra la lógica de elegibilidad analizada previamente para ejecutar incrementos automáticos. Incluye una cláusula de salvaguarda (escudo) que garantiza que el proceso solo realice modificaciones si el resultado es un aumento, protegiendo los salarios base actuales contra desajustes de cálculo.",
+    archivo: "ejercicio_20.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTORES: SANTIAGO PINZÓN VÁSQUEZ - JAIBER DIAZ
+FECHA: 08/04/2026
+DESCRIPCIÓN: Sentencia MERGE avanzada para actualización masiva de salarios con filtros de elegibilidad.
+*/</span>
+<span style="color: #c678dd;">MERGE INTO</span> t1_employees target
+<span style="color: #c678dd;">USING</span> (
+    <span style="color: #c678dd;">WITH</span> v_var <span style="color: #c678dd;">AS</span> ( <span style="color: #c678dd;">SELECT</span> * <span style="color: #c678dd;">FROM</span> t1_variants <span style="color: #c678dd;">WHERE</span> variant_id = &p_variant_id ),
+    dept_stats <span style="color: #c678dd;">AS</span> ( <span style="color: #c678dd;">SELECT</span> department_id, <span style="color: #e5c07b;">ROUND</span>(<span style="color: #e5c07b;">AVG</span>(salary), 2) <span style="color: #c678dd;">AS</span> dept_avg_salary <span style="color: #c678dd;">FROM</span> t1_employees <span style="color: #c678dd;">GROUP BY</span> department_id ),
+    base_data <span style="color: #c678dd;">AS</span> (
+        <span style="color: #c678dd;">SELECT</span> e.employee_id, e.department_id, e.salary, ds.dept_avg_salary,
+               <span style="color: #c678dd;">CASE WHEN</span> e.salary < ds.dept_avg_salary <span style="color: #c678dd;">THEN</span> <span style="color: #e5c07b;">ROUND</span>(((ds.dept_avg_salary - e.salary) / ds.dept_avg_salary) * 100, 2) <span style="color: #c678dd;">ELSE</span> 0 <span style="color: #c678dd;">END AS</span> pct_gap_to_avg,
+               v.* <span style="color: #c678dd;">FROM</span> t1_employees e 
+        <span style="color: #c678dd;">LEFT JOIN</span> dept_stats ds <span style="color: #c678dd;">ON</span> e.department_id = ds.department_id 
+        <span style="color: #c678dd;">CROSS JOIN</span> v_var v
+    )
+    <span style="color: #c678dd;">SELECT</span> employee_id, 
+           <span style="color: #e5c07b;">LEAST</span>(
+             <span style="color: #e5c07b;">ROUND</span>(salary * (1 + (<span style="color: #c678dd;">CASE WHEN</span> pct_gap_to_avg >= gap_high_threshold_pct <span style="color: #c678dd;">THEN</span> raise_high_pct <span style="color: #c678dd;">ELSE</span> raise_low_pct <span style="color: #c678dd;">END</span>) / 100), 2), 
+             <span style="color: #e5c07b;">ROUND</span>(dept_avg_salary * (max_salary_vs_avg_pct / 100), 2)
+           ) <span style="color: #c678dd;">AS</span> salary_after
+    <span style="color: #c678dd;">FROM</span> base_data 
+    <span style="color: #c678dd;">WHERE</span> department_id <span style="color: #c678dd;">IS NOT NULL AND</span> years_service >= min_years_service
+) source
+<span style="color: #c678dd;">ON</span> (target.employee_id = source.employee_id)
+<span style="color: #c678dd;">WHEN MATCHED THEN</span> 
+    <span style="color: #c678dd;">UPDATE SET</span> target.salary = source.salary_after
+    <span style="color: #c678dd;">WHERE</span> source.salary_after > target.salary;`
   }
+
+  
 ];
 ---
 
