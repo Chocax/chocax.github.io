@@ -42,7 +42,76 @@ const ejercicios = [
 <span style="color: #c678dd;">FROM</span> HR.EMPLOYEES E
 <span style="color: #c678dd;">LEFT JOIN</span> HR.EMPLOYEES M <span style="color: #c678dd;">ON</span> E.MANAGER_ID = M.EMPLOYEE_ID
 <span style="color: #c678dd;">ORDER BY</span> E.LAST_NAME;`
-  }
+  },
+  {
+      id: "04",
+      titulo: "Serie Fibonacci hasta 100",
+      enunciado: "Desarrollar un bloque PL/SQL que calcule e imprima la secuencia de Fibonacci de manera iterativa, deteniéndose antes de superar el valor de 100.",
+      archivo: "ejercicio_04.sql",
+      codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+  FECHA: 18/02/2026
+  DESCRIPCIÓN: Bloque anónimo en PL/SQL para generar la serie de Fibonacci hasta el límite de 100.
+  */</span>
+  <span style="color: #c678dd;">DECLARE</span>
+      vn_a <span style="color: #e5c07b;">NUMBER</span> := 0; 
+      vn_b <span style="color: #e5c07b;">NUMBER</span> := 1;
+  <span style="color: #c678dd;">BEGIN</span>
+      <span style="color: #c678dd;">WHILE</span> vn_a <= 100 <span style="color: #c678dd;">LOOP</span>
+          <span style="color: #e5c07b;">dbms_output.put_line</span>(vn_a); 
+          vn_b := vn_a + vn_b;  
+          vn_a := vn_b - vn_a; 
+      <span style="color: #c678dd;">END LOOP</span>;
+  <span style="color: #c678dd;">END</span>;
+  /`
+    },
+  {
+    id: "05",
+    titulo: "Mínimo Común Múltiplo (MCM)",
+    enunciado: "Cálculo del menor múltiplo común entre dos números enteros mediante un proceso iterativo con PL/SQL, utilizando el operador MOD y la función GREATEST.",
+    archivo: "ejercicio_05.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA: 18/02/2026
+DESCRIPCIÓN: Bloque PL/SQL para encontrar el Mínimo Común Múltiplo (MCM) de dos números de forma iterativa.
+*/</span>
+<span style="color: #c678dd;">DECLARE</span> 
+    vn_num1   <span style="color: #e5c07b;">NUMBER</span> := 12;
+    vn_num2   <span style="color: #e5c07b;">NUMBER</span> := 18;
+    vn_mcm    <span style="color: #e5c07b;">NUMBER</span> := <span style="color: #e5c07b;">GREATEST</span>(vn_num1, vn_num2); 
+    vb_x      <span style="color: #c678dd;">BOOLEAN</span> := <span style="color: #c678dd;">TRUE</span>;
+<span style="color: #c678dd;">BEGIN</span> 
+    <span style="color: #c678dd;">WHILE</span> vb_x <span style="color: #c678dd;">LOOP</span>
+        <span style="color: #c678dd;">IF</span> (<span style="color: #e5c07b;">MOD</span>(vn_mcm, vn_num1) = 0) <span style="color: #c678dd;">AND</span> (<span style="color: #e5c07b;">MOD</span>(vn_mcm, vn_num2) = 0) <span style="color: #c678dd;">THEN</span>
+            <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'El MCM de '</span> || vn_num1 || <span style="color: #98c379;">' y '</span> || vn_num2 || <span style="color: #98c379;">' es: '</span> || vn_mcm);
+            vb_x := <span style="color: #c678dd;">FALSE</span>; 
+        <span style="color: #c678dd;">ELSE</span>
+            vn_mcm := vn_mcm + 1;
+        <span style="color: #c678dd;">END IF</span>;
+    <span style="color: #c678dd;">END LOOP</span>; 
+<span style="color: #c678dd;">END</span>;
+/`
+  },
+  {
+    id: "06",
+    titulo: "Raíz Cuadrada Entera",
+    enunciado: "Dado un número X, identificar el número entero que elevado al cuadrado sea igual a X. En caso de no existir una raíz exacta, el programa informa que no hay raíz entera.",
+    archivo: "ejercicio_06.sql",
+    codigo: `<span style="color: #5c6370;">/* AUTOR: SANTIAGO PINZÓN VÁSQUEZ
+FECHA:18/02/2026 
+DESCRIPCIÓN: Bloque PL/SQL que utiliza un ciclo FOR para encontrar la raíz cuadrada entera de un número por búsqueda exhaustiva.
+*/</span>
+<span style="color: #c678dd;">DECLARE</span> 
+    vn_x <span style="color: #e5c07b;">NUMBER</span> := 64;
+<span style="color: #c678dd;">BEGIN</span> 
+    <span style="color: #c678dd;">FOR</span> i <span style="color: #c678dd;">IN</span> 1..vn_x <span style="color: #c678dd;">LOOP</span>
+        <span style="color: #c678dd;">IF</span> i * i = vn_x <span style="color: #c678dd;">THEN</span>
+            <span style="color: #e5c07b;">dbms_output.put_line</span>(i);
+            <span style="color: #c678dd;">RETURN</span>; 
+        <span style="color: #c678dd;">END IF</span>;
+    <span style="color: #c678dd;">END LOOP</span>;
+    <span style="color: #e5c07b;">dbms_output.put_line</span>(<span style="color: #98c379;">'No hay raíz entera'</span>);
+<span style="color: #c678dd;">END</span>;
+/`
+  },
 ];
 ---
 
@@ -57,11 +126,11 @@ const ejercicios = [
           
           <header style="margin-bottom: 80px; border-bottom: 1px solid #222; padding-bottom: 30px;">
             <h2 style="font-size: 3.5rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 20px;">
-              Actividades SQL
+              Actividades Oracle SQL
             </h2>
             <div style="background: #1a1a1a; border-left: 4px solid #ffbd2e; padding: 15px 25px; border-radius: 4px;">
-              <p style="color: #e0e0e0; font-size: 1.1rem; margin: 0;">
-                <strong>Nota:</strong> Todos los ejercicios presentados a continuación han sido desarrollados utilizando el <strong>esquema HR (Human Resources)</strong> proporcionado por <strong>Oracle Live SQL</strong>.
+              <p style="color: #e0e0e0; font-size: 1.1rem; line-height: 1.6; margin: 0;">
+                Ejercicios desarrollados durante la asignatura de <strong>Bases de Datos II</strong>. Esta sección incluye retos de lógica, consultas complejas y aplicaciones prácticas realizadas tanto sobre el esquema de <strong>Recursos Humanos (HR)</strong> como en escenarios diversos de bases de datos relacionales.
               </p>
             </div>
           </header>
