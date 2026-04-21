@@ -10,30 +10,53 @@ import Sidebar from "../components/Sidebar.astro";
     <div class="content">
       <Sidebar selectedItem="evidencias" />
       <nav class="main">
-        <div class="container">
-          <h2 style="margin-top: 40px;">Evidencias</h2>
-          <p class="lead">Documentación y respaldos de los módulos aprendidos.</p>
+        <div class="container" style="max-width: 1200px; padding: 60px 40px;">
           
-          <div class="projects-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+          <header style="margin-bottom: 60px;">
+            <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">Evidencias</h2>
+            <p class="lead" style="color: #888; font-size: 1.2rem;">Documentación y respaldos de los módulos aprendidos durante el semestre.</p>
+          </header>
+          
+          <div class="projects-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px;">
             
-            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
-              <h4 style="color: #fff;">SQL</h4>
-              <p class="gray-color">Scripts de creación y DML.</p>
+            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px; transition: transform 0.3s ease;">
+              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">SQL</h4>
+              <p style="color: #ccc; line-height: 1.6;">
+                Dominio de DDL y DML avanzado. Incluye desde consultas diagnósticas con <strong>CTEs</strong> y <strong>Window Functions</strong> hasta sentencias <strong>MERGE</strong> con lógica de integridad.
+              </p>
+              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
+                Aplica a: Ejercicios 1-4, 18-20.
+              </p>
             </div>
 
-            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
-              <h4 style="color: #fff;">PL/SQL Scripts</h4>
-              <p class="gray-color">Triggers y Funciones.</p>
+            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px;">
+              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">PL/SQL Scripts</h4>
+              <p style="color: #ccc; line-height: 1.6;">
+                Programación procedural en Oracle. Implementación de <strong>Triggers</strong> de auditoría, <strong>Funciones</strong>, Procedimientos Almacenados y <strong>Packages</strong> (Spec & Body).
+              </p>
+              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
+                Aplica a: Ejercicios 5-17.
+              </p>
             </div>
 
-            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
-              <h4 style="color: #fff;">NoSQL</h4>
-              <p class="gray-color">Bases de datos de documentos.</p>
+            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px;">
+              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">NoSQL</h4>
+              <p style="color: #ccc; line-height: 1.6;">
+                Introducción a bases de datos orientadas a documentos. Se trabajó el motor <strong>MongoDB</strong> en clase; actualmente en fase de profundización de documentación oficial para implementación.
+              </p>
+              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
+                Estado: En revisión de documentación.
+              </p>
             </div>
 
-            <div class="projects-container" style="padding: 25px; background: #111; border: 1px solid #333; border-radius: 15px; text-align: center;">
-              <h4 style="color: #fff;">Proyecto</h4>
-              <p class="gray-color">Integración final del semestre.</p>
+            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px;">
+              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">Proyecto</h4>
+              <p style="color: #ccc; line-height: 1.6;">
+                <strong>Metrical Zone of Wines:</strong> Plataforma de análisis de datos vinícolas. Integración de arquitectura híbrida (SQL/NoSQL) con Spring Boot y React.
+              </p>
+              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
+                Estado: Desarrollo activo / Backend en progreso.
+              </p>
             </div>
 
           </div>
