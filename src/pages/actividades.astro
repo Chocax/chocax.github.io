@@ -721,15 +721,15 @@ DESCRIPCIÓN: Sentencia MERGE avanzada para actualización masiva de salarios co
       }
     </style>
 
-    <script>
+      <script>
       const ITEMS_PER_PAGE = 5;
       const container = document.getElementById('exercises-container');
       const exercises = Array.from(container.getElementsByClassName('activity-item'));
       const controlContainers = document.querySelectorAll('.pagination-controls');
       const totalPages = Math.ceil(exercises.length / ITEMS_PER_PAGE);
 
-      // Actualizar textos informativos
-      document.querySelectorAll('.total-pages-text').forEach(el => el.innerText = totalPages.toString());
+      // Seleccionamos el header de la sección para el scroll
+      const sectionHeader = document.querySelector('header');
 
       function showPage(pageNumber) {
         const start = (pageNumber - 1) * ITEMS_PER_PAGE;
@@ -739,18 +739,24 @@ DESCRIPCIÓN: Sentencia MERGE avanzada para actualización masiva de salarios co
           (ex as HTMLElement).style.display = (index >= start && index < end) ? 'block' : 'none';
         });
 
-        // Sincronizar botones activos en ambos controles
+        // Sincronizar botones activos
         document.querySelectorAll('.page-btn').forEach(btn => {
           btn.classList.toggle('active', parseInt((btn as HTMLElement).innerText) === pageNumber);
         });
 
-        // Actualizar número de página actual
+        // Actualizar textos informativos
         document.querySelectorAll('.current-page-text').forEach(el => (el as HTMLElement).innerText = pageNumber.toString());
 
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // --- EL AJUSTE CLAVE: SCROLL AL ORIGEN ---
+        // Usamos el header de la sección como punto de referencia para que salga desde arriba
+        if (sectionHeader) {
+          sectionHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
       }
 
-      // Generar botones en todos los contenedores de control
+      // Generar botones en todos los controles
       controlContainers.forEach(nav => {
         for (let i = 1; i <= totalPages; i++) {
           const btn = document.createElement('button');
@@ -761,7 +767,16 @@ DESCRIPCIÓN: Sentencia MERGE avanzada para actualización masiva de salarios co
         }
       });
 
-      showPage(1);
+      // Al cargar, no disparamos el scroll para no saltar si el usuario recarga
+      const startPage = 1;
+      const start = (startPage - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      exercises.forEach((ex, index) => {
+        (ex as HTMLElement).style.display = (index >= start && index < end) ? 'block' : 'none';
+      });
+      document.querySelectorAll('.page-btn').forEach(btn => {
+        if(parseInt((btn as HTMLElement).innerText) === startPage) btn.classList.add('active');
+      });
     </script>
   </body>
 </html>
