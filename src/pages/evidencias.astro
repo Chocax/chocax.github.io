@@ -12,56 +12,151 @@ import Sidebar from "../components/Sidebar.astro";
       <nav class="main">
         <div class="container" style="max-width: 1200px; padding: 60px 40px;">
           
-          <header style="margin-bottom: 60px;">
-            <h2 style="font-size: 3rem; font-weight: 800; margin-bottom: 10px;">Evidencias</h2>
-            <p class="lead" style="color: #888; font-size: 1.2rem;">Documentación y respaldos de los módulos aprendidos durante el semestre.</p>
+          <header style="margin-bottom: 50px;">
+            <h2 style="font-size: 3.5rem; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 10px;">
+              Evidencias
+            </h2>
+            <p style="color: #666; font-size: 1.2rem; font-family: monospace;">
+              > Documentación y respaldos de los módulos aprendidos.
+            </p>
+            <hr style="border: 0; border-top: 1px solid #222; margin-top: 30px;" />
           </header>
           
-          <div class="projects-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px;">
+          <div class="evidence-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
             
-            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px; transition: transform 0.3s ease;">
-              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">SQL</h4>
-              <p style="color: #ccc; line-height: 1.6;">
-                Dominio de DDL y DML avanzado. Incluye desde consultas diagnósticas con <strong>CTEs</strong> y <strong>Window Functions</strong> hasta sentencias <strong>MERGE</strong> con lógica de integridad.
-              </p>
-              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
-                Aplica a: Ejercicios 1-4, 18-20.
-              </p>
+            <div class="card">
+              <div class="icon-container">
+                <span class="icon">📁</span>
+              </div>
+              <h4>SQL</h4>
+              <p>Scripts de creación y DML avanzado. Manejo de consultas complejas y optimización.</p>
+              <div class="card-footer">
+                <span class="tag">Ejercicios 1-4, 18-20</span>
+              </div>
             </div>
 
-            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px;">
-              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">PL/SQL Scripts</h4>
-              <p style="color: #ccc; line-height: 1.6;">
-                Programación procedural en Oracle. Implementación de <strong>Triggers</strong> de auditoría, <strong>Funciones</strong>, Procedimientos Almacenados y <strong>Packages</strong> (Spec & Body).
-              </p>
-              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
-                Aplica a: Ejercicios 5-17.
-              </p>
+            <div class="card">
+              <div class="icon-container">
+                <span class="icon">⚡</span>
+              </div>
+              <h4>PL/SQL Scripts</h4>
+              <p>Programación procedural: Triggers, Funciones y Packages para automatización de procesos.</p>
+              <div class="card-footer">
+                <span class="tag">Ejercicios 5-17</span>
+              </div>
             </div>
 
-            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px;">
-              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">NoSQL</h4>
-              <p style="color: #ccc; line-height: 1.6;">
-                Introducción a bases de datos orientadas a documentos. Se trabajó el motor <strong>MongoDB</strong> en clase; actualmente en fase de profundización de documentación oficial para implementación.
-              </p>
-              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
-                Estado: En revisión de documentación.
-              </p>
+            <div class="card">
+              <div class="icon-container">
+                <span class="icon">🍃</span>
+              </div>
+              <h4>NoSQL</h4>
+              <p>Exploración de MongoDB. Actualmente profundizando en documentación para implementación.</p>
+              <div class="card-footer">
+                <span class="status">Pendiente Documentación</span>
+              </div>
             </div>
 
-            <div class="projects-container" style="padding: 30px; background: #111; border: 1px solid #222; border-radius: 20px;">
-              <h4 style="color: #ffbd2e; font-size: 1.4rem; margin-bottom: 15px;">Proyecto</h4>
-              <p style="color: #ccc; line-height: 1.6;">
-                <strong>Metrical Zone of Wines:</strong> Plataforma de análisis de datos vinícolas. Integración de arquitectura híbrida (SQL/NoSQL) con Spring Boot y React.
-              </p>
-              <p style="color: #666; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid #222; padding-top: 10px;">
-                Estado: Desarrollo activo / Backend en progreso.
-              </p>
+            <div class="card highlight">
+              <div class="icon-container">
+                <span class="icon">🍷</span>
+              </div>
+              <h4>Proyecto</h4>
+              <p><strong>Metrical Zone of Wines:</strong> Integración final en desarrollo con Spring Boot y React.</p>
+              <div class="card-footer">
+                <span class="status">En Desarrollo Activo</span>
+              </div>
             </div>
 
           </div>
         </div>
       </nav>
     </div>
+
+    <style>
+      .card {
+        background: linear-gradient(145deg, #111, #080808);
+        border: 1px solid #222;
+        border-radius: 24px;
+        padding: 35px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card:hover {
+        transform: translateY(-10px);
+        border-color: #ffbd2e;
+        box-shadow: 0 20px 40px rgba(255, 189, 46, 0.05);
+      }
+
+      .card.highlight {
+        border-color: #333;
+        background: linear-gradient(145deg, #161616, #0d0d0d);
+      }
+
+      .icon-container {
+        background: #1a1a1a;
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .icon {
+        font-size: 1.5rem;
+      }
+
+      h4 {
+        color: #fff;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin: 0;
+      }
+
+      p {
+        color: #888;
+        font-size: 1rem;
+        line-height: 1.6;
+        margin: 0;
+        flex-grow: 1;
+      }
+
+      .card-footer {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #1a1a1a;
+      }
+
+      .tag, .status {
+        font-family: monospace;
+        font-size: 0.85rem;
+        color: #ffbd2e;
+        opacity: 0.8;
+      }
+
+      .status {
+        color: #666;
+        font-style: italic;
+      }
+
+      /* Brillo sutil al fondo de las cards */
+      .card::after {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,189,46,0.03) 0%, transparent 70%);
+        pointer-events: none;
+      }
+    </style>
   </body>
 </html>
